@@ -16,3 +16,4 @@ impl Lexer for Digit
 }
 
 impl_bitor!(Digit);
+impl_bitand!(Digit);

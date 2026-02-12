@@ -1,5 +1,5 @@
 use crate::*;
-use crate::lexer as lx;
+use crate::lexer::*;
 
 
 pub struct Chars;
@@ -10,7 +10,16 @@ impl Lexer for Chars
 
     fn lex<'s>(&self, source: &'s str) -> LexResult<'s, Self::Output>
     {
-        // lx::and![].lex(source)
-        unimplemented!()
+        Many(AnyChar)
+            .lex(source)
+            .map(|(chars, residue)|
+                (
+                    chars.into_iter().collect::<String>(),
+                    residue
+                )
+            )
     }
 }
+
+impl_bitor!(Chars);
+impl_bitand!(Chars);

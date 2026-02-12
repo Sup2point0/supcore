@@ -16,3 +16,4 @@ impl Lexer for AnyChar
 }
 
 impl_bitor!(AnyChar);
+impl_bitand!(AnyChar);
