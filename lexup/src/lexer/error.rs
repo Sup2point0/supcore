@@ -1,3 +1,6 @@
+pub type LexResult<'s, Output> = Result<(Output, &'s str), LexError>;
+
+
 #[derive(Clone, Eq, PartialEq, Hash, Debug)]
 pub enum LexError
 {

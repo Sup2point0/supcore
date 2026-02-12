@@ -1,8 +1,8 @@
 mod lexer; pub use lexer::Lexer;
-mod error; pub use error::LexError;
+mod error; pub use error::{ LexError, LexResult };
 
 mod lexers {
-    pub(crate) mod or;   pub use or::Or;
+    pub(crate) mod or;   pub use or::{ Or, or };
     pub(crate) mod and;  pub use and::And;
     pub(crate) mod many; pub use many::Many;
     // pub(crate) mod some; pub use some::Some;

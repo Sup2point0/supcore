@@ -1,11 +1,11 @@
-pub use crate::*;
+use crate::*;
 
 
 pub trait Lexer
 {
     type Output;
 
-    fn lex<'s>(&self, source: &'s str) -> Result<(Self::Output, &'s str), LexError>;
+    fn lex<'s>(&self, source: &'s str) -> LexResult<'s, Self::Output>;
 
     fn map<Mapper, Out>(self, f: Mapper) -> Mapped<Self, Mapper, Out>
         where
@@ -30,7 +30,7 @@ impl<Lx, Mapper, Out> Lexer for Mapped<Lx, Mapper, Out>
 {
     type Output = Out;
 
-    fn lex<'s>(&self, source: &'s str) -> Result<(Self::Output, &'s str), LexError>
+    fn lex<'s>(&self, source: &'s str) -> LexResult<'s, Self::Output>
     {
         let (res, residue) = (self.0).lex(source)?;
         let out = (self.1)(res);

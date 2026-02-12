@@ -6,14 +6,14 @@ use lexup::Lexer;
 fn main()
 {
     let lexer = Many(
-        Or(
+        or![
             And(
                 Char('i'),
                 Char('s'),
                 |l, r| format!("{l}-{r}")
             ),
             Char('s').map(|s| s.to_string())
-        )
+        ]
     );
     println!("{:?}", lexer.lex("issis"));
 }

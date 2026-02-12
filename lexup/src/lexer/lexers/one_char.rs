@@ -8,7 +8,7 @@ impl Lexer for Char
 {
     type Output = char;
 
-    fn lex<'s>(&self, source: &'s str) -> Result<(Self::Output, &'s str), LexError>
+    fn lex<'s>(&self, source: &'s str) -> LexResult<'s, Self::Output>
     {
         lx::Satisfies(|c| *c == self.0).lex(source)
     }

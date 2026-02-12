@@ -8,7 +8,7 @@ impl<Lx> Lexer for Many<Lx> where Lx: Lexer
 {
     type Output = Vec<Lx::Output>;
 
-    fn lex<'s>(&self, source: &'s str) -> Result<(Self::Output, &'s str), LexError>
+    fn lex<'s>(&self, source: &'s str) -> LexResult<'s, Self::Output>
     {
         let mut rest = source;
         let mut out = vec![];
