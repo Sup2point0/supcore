@@ -2,14 +2,15 @@ use crate::*;
 use crate::lexer as lx;
 
 
-pub struct Char(pub char);
+pub struct Digit;
 
-impl Lexer for Char
+impl Lexer for Digit
 {
     type Output = char;
 
     fn lex<'s>(&self, source: &'s str) -> Result<(Self::Output, &'s str), LexError>
     {
-        lx::Satisfies(|c| *c == self.0).lex(source)
+        lx::Satisfies(|c| ('0'..'9').contains(c))
+            .lex(source)
     }
 }
