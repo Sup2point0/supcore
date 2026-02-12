@@ -1,9 +1,15 @@
 use crate::*;
 
 
+pub fn any_char() -> Lexer<AnyChar>
+{
+    Lexer(AnyChar)
+}
+
+
 pub struct AnyChar;
 
-impl Lexer for AnyChar
+impl Lexes for AnyChar
 {
     type Output = char;
 
@@ -13,6 +19,3 @@ impl Lexer for AnyChar
             .lex(source)
     }
 }
-
-impl_bitor!(AnyChar);
-impl_bitand!(AnyChar);

@@ -2,9 +2,15 @@ use crate::*;
 use crate::lexer as lx;
 
 
-pub struct Char(pub char);
+pub fn char1(c: char) -> Lexer<SpecificChar>
+{
+    Lexer(SpecificChar(c))
+}
 
-impl Lexer for Char
+
+pub struct SpecificChar(pub char);
+
+impl Lexes for SpecificChar
 {
     type Output = char;
 
@@ -13,6 +19,3 @@ impl Lexer for Char
         lx::Satisfies(|c| *c == self.0).lex(source)
     }
 }
-
-impl_bitor!(Char);
-impl_bitand!(Char);

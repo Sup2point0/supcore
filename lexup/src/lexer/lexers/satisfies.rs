@@ -1,9 +1,15 @@
 pub use crate::*;
 
 
+pub fn satisfies<Pred>(pred: Pred) -> Lexer<Satisfies<Pred>> where Pred: Fn(&char) -> bool
+{
+    Lexer(Satisfies(pred))
+}
+
+
 pub struct Satisfies<Pred>(pub Pred) where Pred: Fn(&char) -> bool;
 
-impl<Pred> Lexer for Satisfies<Pred> where Pred: Fn(&char) -> bool
+impl<Pred> Lexes for Satisfies<Pred> where Pred: Fn(&char) -> bool
 {
     type Output = char;
 

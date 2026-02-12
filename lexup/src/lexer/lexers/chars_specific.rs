@@ -2,20 +2,15 @@ use crate::*;
 use crate::lexer::*;
 
 
-#[macro_export]
-macro_rules! chars {
-    ($str:expr) =>
-    {
-        Chars($str.chars().collect())
-    };
+pub fn chars(str: &str) -> Lexer<Chars>
+{
+    Lexer(Chars(str.chars().collect()))
 }
-
-pub use chars;
 
 
 pub struct Chars(pub Vec<char>);
 
-impl Lexer for Chars
+impl Lexes for Chars
 {
     type Output = String;
 
@@ -32,6 +27,3 @@ impl Lexer for Chars
         Ok((self.0.iter().collect(), residue))
     }
 }
-
-impl_bitor!(Chars);
-impl_bitand!(Chars);

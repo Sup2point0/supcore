@@ -2,9 +2,15 @@ use crate::*;
 use crate::lexer as lx;
 
 
+pub fn digit() -> Lexer<Digit>
+{
+    Lexer(Digit)
+}
+
+
 pub struct Digit;
 
-impl Lexer for Digit
+impl Lexes for Digit
 {
     type Output = char;
 
@@ -14,6 +20,3 @@ impl Lexer for Digit
             .lex(source)
     }
 }
-
-impl_bitor!(Digit);
-impl_bitand!(Digit);

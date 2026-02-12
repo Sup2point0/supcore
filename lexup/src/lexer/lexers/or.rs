@@ -3,14 +3,14 @@ use crate::*;
 
 pub struct Or<Lx1, Lx2, Out>(pub Lx1, pub Lx2)
     where
-        Lx1: Lexer<Output = Out>,
-        Lx2: Lexer<Output = Out>,
+        Lx1: Lexes<Output = Out>,
+        Lx2: Lexes<Output = Out>,
 ;
 
-impl<Lx1, Lx2, Out> Lexer for Or<Lx1, Lx2, Out>
+impl<Lx1, Lx2, Out> Lexes for Or<Lx1, Lx2, Out>
     where
-        Lx1: Lexer<Output = Out>,
-        Lx2: Lexer<Output = Out>,
+        Lx1: Lexes<Output = Out>,
+        Lx2: Lexes<Output = Out>,
 {
     type Output = Out;
 

@@ -1,9 +1,15 @@
 use crate::*;
 
 
-pub struct Many0<Lx>(pub Lx) where Lx: Lexer;
+pub fn many0<Lx: Lexes>(lexer: Lexer<Lx>) -> Lexer<Many0<Lx>>
+{
+    Lexer(Many0(lexer.0))
+}
 
-impl<Lx> Lexer for Many0<Lx> where Lx: Lexer
+
+pub struct Many0<Lx>(pub Lx) where Lx: Lexes;
+
+impl<Lx> Lexes for Many0<Lx> where Lx: Lexes
 {
     type Output = Vec<Lx::Output>;
 

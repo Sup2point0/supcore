@@ -3,15 +3,15 @@ use lexup::*;
 
 fn main()
 {
-    let lexer = Many0
+    let lexer = many0
     (
         (
-            Char('i') & Char('s')
+            char1('i') & char1('s')
         ).merge(
             |l, r| format!("{l}-{r}")
         )
         |
-            Char('s').map(|s| s.to_string())
+            char1('s').map(|s| s.to_string())
     );
     println!("{:?}", lexer.lex("issis"));
 }
