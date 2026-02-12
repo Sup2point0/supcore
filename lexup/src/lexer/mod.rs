@@ -1,24 +1,26 @@
-mod lexer; pub use lexer::Lexer;
-mod error; pub use error::{ LexError, LexResult };
+mod lexer; pub use lexer::*;
+mod error; pub use error::*;
 
 mod lexers {
     mod mapped; pub use mapped::Mapped;
 
     mod or;   pub use or::Or;
-    mod and;  pub use and::And;
-    mod many; pub use many::Many;
-    // mod some; pub use some::Some;
+    mod and;  pub use and::{ And, Pair };
+    // mod seq;  pub use seq::{ Chain };
+    mod many_0; pub use many_0::Many0;
+    mod many_1; pub use many_1::Many1;
 
-    mod satisfies; pub use satisfies::Satisfies;
-    mod any_char;  pub use any_char::AnyChar;
-    mod one_char;  pub use one_char::Char;
-    mod chars;     pub use chars::Chars;
-    mod digit;     pub use digit::Digit;
+    mod satisfies;      pub use satisfies::Satisfies;
+    mod char_any;       pub use char_any::AnyChar;
+    mod char_specific;  pub use char_specific::Char;
+    mod chars_specific; pub use chars_specific::{ Chars, chars };
+    mod digit;          pub use digit::Digit;
 }
 pub use lexers::*;
 
 mod macros {
-    mod bitand; pub use bitand::impl_bitand;
-    mod bitor;  pub use bitor::impl_bitor;
+    mod produce; pub use produce::produces;
+    mod bitand;  pub use bitand::impl_bitand;
+    mod bitor;   pub use bitor::{impl_bitor, bitor_impl};
 }
 pub use macros::*;

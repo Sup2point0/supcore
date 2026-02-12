@@ -1,6 +1,9 @@
 use crate::*;
 
 
+pub type LexResult<'s, Output> = Result<(Output, &'s str), LexError>;
+
+
 pub trait Lexer
 {
     type Output;
@@ -13,5 +16,13 @@ pub trait Lexer
             Mapper: Fn(Self::Output) -> Out
     {
         Mapped(self, f)
+    }
+
+    fn produce<Out>(self, out: Out) -> Mapped<Self, impl Fn(Self::Output) -> Out, Out>
+        where
+            Self: Sized,
+            Out: Clone + 'static,
+    {
+        Mapped(self, move |_| out.clone())
     }
 }

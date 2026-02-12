@@ -14,7 +14,7 @@ impl<Lx1, Lx2, Out> Lexer for Or<Lx1, Lx2, Out>
 {
     type Output = Out;
 
-    fn lex<'s>(&self, source: &'s str) -> Result<(Self::Output, &'s str), LexError>
+    fn lex<'s>(&self, source: &'s str) -> LexResult<'s, Self::Output>
     {
         match (self.0).lex(source)
         {
@@ -24,7 +24,7 @@ impl<Lx1, Lx2, Out> Lexer for Or<Lx1, Lx2, Out>
                     Ok(deut) => Ok(deut),
                     Err{..}  => Err(fail),
                 }
-            },
+            }
         }
     }
 }

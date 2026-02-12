@@ -1,11 +1,9 @@
-use lexup;
-use lexup::lexer::*;
-use lexup::Lexer;
+use lexup::*;
 
 
 fn main()
 {
-    let lexer = Many
+    let lexer = Many0
     (
         (
             Char('i') & Char('s')

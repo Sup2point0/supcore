@@ -1,11 +1,9 @@
-pub type LexResult<'s, Output> = Result<(Output, &'s str), LexError>;
-
-
 #[derive(Clone, Eq, PartialEq, Hash, Debug)]
 pub enum LexError
 {
     NoParse,
-    UnexpectedInput(String),
+    UnknownCharacter(char),
+    UnexpectedCharacter(char),
 }
 
 impl std::fmt::Display for LexError
@@ -14,8 +12,9 @@ impl std::fmt::Display for LexError
     {
         match self
         {
-            Self::NoParse              => write!(f, "No parse"),
-            Self::UnexpectedInput(msg) => write!(f, "Unexpected input: {msg}"),
+            Self::NoParse                => write!(f, "No parse"),
+            Self::UnknownCharacter(c)    => write!(f, "Unknown character: {c}"),
+            Self::UnexpectedCharacter(c) => write!(f, "Unexpected input: {c}"),
         }
     }
 }

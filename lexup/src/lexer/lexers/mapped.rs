@@ -16,9 +16,18 @@ impl<Lx, Mapper, Out> Lexer for Mapped<Lx, Mapper, Out>
 
     fn lex<'s>(&self, source: &'s str) -> LexResult<'s, Self::Output>
     {
-        let (res, residue) = (self.0).lex(source)?;
+        let (res, residue) = self.0.lex(source)?;
         let out = (self.1)(res);
 
         Ok((out, residue))
     }
+}
+
+impl<Lx, Mapper, Out, Lxr> std::ops::BitOr<Lxr> for Mapped<Lx, Mapper, Out>
+    where
+        Lxr: Lexer<Output = <Self as Lexer>::Output>,
+        Lx: Lexer,
+        Mapper: Fn(Lx::Output) -> Out,
+{
+    bitor_impl!();
 }

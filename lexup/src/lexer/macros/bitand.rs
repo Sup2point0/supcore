@@ -13,4 +13,5 @@ macro_rules! impl_bitand {
         }
     };
 }
+
 pub use impl_bitand;
