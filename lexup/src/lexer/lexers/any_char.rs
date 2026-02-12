@@ -14,3 +14,5 @@ impl Lexer for AnyChar
             .lex(source)
     }
 }
+
+impl_bitor!(AnyChar);

@@ -14,3 +14,5 @@ impl Lexer for Digit
             .lex(source)
     }
 }
+
+impl_bitor!(Digit);
