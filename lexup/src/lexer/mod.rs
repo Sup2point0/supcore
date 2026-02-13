@@ -7,9 +7,10 @@ mod lexer_combinator; pub use lexer_combinator::*;
 mod lexers {
     mod mapped; pub use mapped::*;
 
-    mod or;   pub use or::*;
-    mod and;  pub use and::*;
-    mod seq;  pub use seq::*;
+    mod or;     pub use or::*;
+    mod and;    pub use and::*;
+    mod chain;  pub use chain::*;
+
     mod many_0; pub use many_0::*;
     mod many_1; pub use many_1::*;
 
@@ -20,6 +21,10 @@ mod lexers {
     mod digit;          pub use digit::*;
 }
 pub use lexers::*;
+
+pub mod resolvers {
+    pub mod chars;
+}
 
 mod macros {
     mod produce; pub use produce::*;

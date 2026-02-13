@@ -3,6 +3,9 @@ use std::boxed::Box;
 use crate::*;
 
 
+// == INTERMEDIATE == //
+
+/// Intermediate struct returned by using the `&` combinator on 3+ lexers. Call `.reduce()` on this to produce a full lexer.
 pub struct Chain<Part>(pub Vec<Box<dyn Lexes<Output = Part>>>);
 
 impl<Part> Chain<Part>
@@ -16,7 +19,34 @@ impl<Part> Chain<Part>
     }
 }
 
+impl<Out> LexerCombinator for Chain<Out>
+{
+    type Output = Out;
 
+    fn extract_lexers(self) -> Vec<Box<dyn Lexes<Output = Out>>>
+        where Self: Sized
+    {
+        self.0
+    }
+}
+
+impl<Rhs, Out> std::ops::BitAnd<Rhs> for Chain<Out>
+    where
+        Rhs: LexerCombinator<Output = Out>,
+{
+    type Output = Chain<Out>;
+
+    fn bitand(mut self, rhs: Rhs) -> Self::Output
+    {
+        self.0.extend(rhs.extract_lexers());
+        Chain(self.0)
+    }
+}
+
+
+// == LEXER == //
+
+/// A lexer that applies multiple `lexers` in sequence, combining their outputs by applying `reducer` with initial accumulator `init`.
 pub struct Chained<Part, Merger, Out>
     where
         Merger: Fn(Out, Part) -> Out,

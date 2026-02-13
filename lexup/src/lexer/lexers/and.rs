@@ -5,7 +5,7 @@ use crate::{lexer::lexers, *};
 
 // == INTERMEDIATE == //
 
-/// Intermediate struct returned by using the `&` combinator on 2 lexers. Call `.merge()` or another appropriate resolver on this to produce a new lexer.
+/// Intermediate struct returned by using the `&` combinator on 2 lexers. Call `.merge()` or another appropriate resolver on this to produce a full lexer.
 pub struct And<Lx1, Lx2>(pub Lx1, pub Lx2)
     where
         Lx1: Lexes,

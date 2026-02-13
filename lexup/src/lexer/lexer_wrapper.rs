@@ -43,6 +43,10 @@ impl<Lx> LexerCombinator for Lexer<Lx>
     }
 }
 
+
+// == COMBINATORS == //
+
+// p | q
 impl<Lx, Lxr, Out> std::ops::BitOr<Lexer<Lxr>> for Lexer<Lx>
     where
         Lx:  Lexes<Output = Out>,
@@ -50,6 +54,7 @@ impl<Lx, Lxr, Out> std::ops::BitOr<Lexer<Lxr>> for Lexer<Lx>
 {
     type Output = Lexer<Or<Lx, Lxr, Out>>;
 
+    /// *Alternative* combinator: try applying the left lexer, and if it fails, try applying the right lexer.
     fn bitor(self, rhs: Lexer<Lxr>) -> Self::Output
     {
         Lexer(
@@ -66,6 +71,9 @@ impl<Lx, Lxr> std::ops::BitAnd<Lexer<Lxr>> for Lexer<Lx>
 {
     type Output = And<Lx, Lxr>;
 
+    /// *Sequence* combinator: apply the left lexer, then apply the right lexer.
+    /// 
+    /// Note that this does not return a new lexer, but an intermediate representation – you must provide a way to resolve the outputs of the lexers. See [`And`] for more.
     fn bitand(self, rhs: Lexer<Lxr>) -> Self::Output {
         And(self.0, rhs.0)
     }
@@ -80,6 +88,9 @@ impl<Lx, Lx1, Lx2, Out> std::ops::BitAnd<And<Lx1, Lx2>> for Lexer<Lx>
 {
     type Output = Chain<Out>;
 
+    /// *Sequence* combinator: apply the left lexer, then apply the right lexers.
+    /// 
+    /// Note that this does not return a new lexer, but an intermediate representation – you must provide a way to resolve the outputs of the lexers. See [`Chain`] for more.
     fn bitand(self, rhs: And<Lx1, Lx2>) -> Self::Output
     {
         Chain(vec![
@@ -87,5 +98,26 @@ impl<Lx, Lx1, Lx2, Out> std::ops::BitAnd<And<Lx1, Lx2>> for Lexer<Lx>
             Box::new(rhs.0),
             Box::new(rhs.1),
         ])
+    }
+}
+
+// p & (q & r & s)
+impl<Lx, Out> std::ops::BitAnd<Chain<Out>> for Lexer<Lx>
+    where
+        Lx:  Lexes<Output = Out> + 'static,
+{
+    type Output = Chain<Out>;
+
+    /// *Sequence* combinator: apply the left lexer, then apply the right lexers.
+    /// 
+    /// Note that this does not return a new lexer, but an intermediate representation – you must provide a way to resolve the outputs of the lexers. See [`Chain`] for more.
+    fn bitand(self, rhs: Chain<Out>) -> Self::Output
+    {
+        let mut lexers = Vec::<Box<dyn Lexes<Output = Out>>>::with_capacity(1 + rhs.0.len());
+
+        lexers.push(Box::new(self.0));
+        lexers.extend(rhs.0);
+
+        Chain(lexers)
     }
 }
