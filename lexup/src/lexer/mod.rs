@@ -1,7 +1,8 @@
 mod lexes; pub use lexes::*;
 mod error; pub use error::*;
 
-mod lexer_wrapper; pub use lexer_wrapper::*;
+mod lexer_wrapper;    pub use lexer_wrapper::*;
+mod lexer_combinator; pub use lexer_combinator::*;
 
 mod lexers {
     mod mapped; pub use mapped::*;
@@ -22,7 +23,6 @@ pub use lexers::*;
 
 mod macros {
     mod produce; pub use produce::*;
-    mod bitand;  pub use bitand::*;
     mod bitor;   pub use bitor::*;
 }
 pub use macros::*;

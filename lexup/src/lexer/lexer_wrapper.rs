@@ -32,6 +32,17 @@ impl<Lx: Lexes> Lexer<Lx>
     }
 }
 
+impl<Lx> LexerCombinator for Lexer<Lx>
+    where Lx: Lexes + 'static
+{
+    type Output = Lx::Output;
+
+    fn extract_lexers(self) -> Vec<Box<dyn Lexes<Output = Lx::Output>>> where Self: Sized
+    {
+        vec![Box::new(self.0)]
+    }
+}
+
 impl<Lx, Lxr, Out> std::ops::BitOr<Lexer<Lxr>> for Lexer<Lx>
     where
         Lx:  Lexes<Output = Out>,
@@ -47,6 +58,7 @@ impl<Lx, Lxr, Out> std::ops::BitOr<Lexer<Lxr>> for Lexer<Lx>
     }
 }
 
+// p & q
 impl<Lx, Lxr> std::ops::BitAnd<Lexer<Lxr>> for Lexer<Lx>
     where
         Lx:  Lexes,
@@ -74,25 +86,6 @@ impl<Lx, Lx1, Lx2, Out> std::ops::BitAnd<And<Lx1, Lx2>> for Lexer<Lx>
             Box::new(self.0),
             Box::new(rhs.0),
             Box::new(rhs.1),
-        ])
-    }
-}
-
-// (p & q) & r
-impl<Lx, Lx1, Lx2, Out> std::ops::BitAnd<Lexer<Lx>> for And<Lx1, Lx2>
-    where
-        Lx:  Lexes<Output = Out> + 'static,
-        Lx1: Lexes<Output = Out> + 'static,
-        Lx2: Lexes<Output = Out> + 'static,
-{
-    type Output = Chain<Out>;
-
-    fn bitand(self, rhs: Lexer<Lx>) -> Self::Output
-    {
-        Chain(vec![
-            Box::new(self.0),
-            Box::new(self.1),
-            Box::new(rhs.0),
         ])
     }
 }
