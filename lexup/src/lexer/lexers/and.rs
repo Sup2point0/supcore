@@ -31,20 +31,6 @@ impl<Lx1, Lx2> And<Lx1, Lx2>
     }
 }
 
-// impl<Lx, Lx1, Lx2, Resolver, Out> std::ops::BitAnd<Lx> for Pair<Lx1, Lx2, Resolver, Out>
-//     where
-//         Lx: Lexer<Output = <Self as Lexer>::Output>,
-//         Lx1: Lexer,
-//         Lx2: Lexer,
-//         Resolver: Fn(Lx1::Output, Lx2::Output) -> Out,
-// {
-//     type Output = Chained;
-
-//     fn bitand(self, rhs: Lx) -> Self::Output {
-//         And(self, rhs)
-//     }
-// }
-
 
 pub struct Pair<Lx1, Lx2, Resolver, Out>
     where

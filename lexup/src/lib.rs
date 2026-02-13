@@ -7,3 +7,8 @@ pub use lexup::*;
 // pub(crate) mod lexer;
 pub mod lexer;
 pub use lexer::*;
+
+#[cfg(test)]
+mod tests {
+    mod test_and;
+}

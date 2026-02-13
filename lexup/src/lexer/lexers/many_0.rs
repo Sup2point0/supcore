@@ -15,8 +15,8 @@ impl<Lx> Lexes for Many0<Lx> where Lx: Lexes
 
     fn lex<'s>(&self, source: &'s str) -> LexResult<'s, Self::Output>
     {
-        let mut residue = source;
         let mut out = vec![];
+        let mut residue = source;
 
         loop {
             match (self.0).lex(residue)

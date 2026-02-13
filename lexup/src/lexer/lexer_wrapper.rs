@@ -47,14 +47,52 @@ impl<Lx, Lxr, Out> std::ops::BitOr<Lexer<Lxr>> for Lexer<Lx>
     }
 }
 
-impl<Lx, Lxr, Out> std::ops::BitAnd<Lexer<Lxr>> for Lexer<Lx>
+impl<Lx, Lxr> std::ops::BitAnd<Lexer<Lxr>> for Lexer<Lx>
     where
-        Lx:  Lexes<Output = Out>,
+        Lx:  Lexes,
         Lxr: Lexes,
 {
     type Output = And<Lx, Lxr>;
 
     fn bitand(self, rhs: Lexer<Lxr>) -> Self::Output {
         And(self.0, rhs.0)
+    }
+}
+
+// p & (q & r)
+impl<Lx, Lx1, Lx2, Out> std::ops::BitAnd<And<Lx1, Lx2>> for Lexer<Lx>
+    where
+        Lx:  Lexes<Output = Out> + 'static,
+        Lx1: Lexes<Output = Out> + 'static,
+        Lx2: Lexes<Output = Out> + 'static,
+{
+    type Output = Chain<Out>;
+
+    fn bitand(self, rhs: And<Lx1, Lx2>) -> Self::Output
+    {
+        Chain(vec![
+            Box::new(self.0),
+            Box::new(rhs.0),
+            Box::new(rhs.1),
+        ])
+    }
+}
+
+// (p & q) & r
+impl<Lx, Lx1, Lx2, Out> std::ops::BitAnd<Lexer<Lx>> for And<Lx1, Lx2>
+    where
+        Lx:  Lexes<Output = Out> + 'static,
+        Lx1: Lexes<Output = Out> + 'static,
+        Lx2: Lexes<Output = Out> + 'static,
+{
+    type Output = Chain<Out>;
+
+    fn bitand(self, rhs: Lexer<Lx>) -> Self::Output
+    {
+        Chain(vec![
+            Box::new(self.0),
+            Box::new(self.1),
+            Box::new(rhs.0),
+        ])
     }
 }
