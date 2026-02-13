@@ -1,16 +1,18 @@
 use crate::*;
 
 
-/// A newtype wrapper for a lexer variant.'
+/// A newtype wrapper for a lexer variant.
 pub struct Lexer<Lx: Lexes>(pub(crate) Lx);
 
 impl<Lx: Lexes> Lexer<Lx>
 {
+    /// Lex the given `source` code, returning `(product, residue)` if a lex is successfully made.
     pub fn lex<'s>(&self, source: &'s str) -> LexResult<'s, Lx::Output>
     {
         self.0.lex(source)
     }
 
+    /// Apply `f` to the output of this lexer.
     pub fn map<Mapper, Out>(self, f: Mapper) -> Lexer<Mapped<Lx, Mapper, Out>>
         where
             Self: Sized,
@@ -21,6 +23,7 @@ impl<Lx: Lexes> Lexer<Lx>
         )
     }
 
+    /// Produce `out` if this lexer successfully lexes any input.
     pub fn produce<Out>(self, out: Out) -> Lexer<Mapped<Lx, impl Fn(Lx::Output) -> Out, Out>>
         where
             Self: Sized,
@@ -32,6 +35,7 @@ impl<Lx: Lexes> Lexer<Lx>
     }
 }
 
+/// Any composite lexer that can return a collection of the lexers it captures.
 impl<Lx> LexerCombinator for Lexer<Lx>
     where Lx: Lexes + 'static
 {

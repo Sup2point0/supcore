@@ -5,6 +5,7 @@ pub enum LexError
 
     UnknownCharacter(char),
     UnexpectedCharacter(char),
+    UnusedInput(String),
 
     UnknownError,
 }
@@ -18,6 +19,7 @@ impl std::fmt::Display for LexError
             Self::NoParse                => write!(f, "No parse"),
             Self::UnknownCharacter(c)    => write!(f, "Unknown character: {c}"),
             Self::UnexpectedCharacter(c) => write!(f, "Unexpected input: {c}"),
+            Self::UnusedInput(str)       => write!(f, "Unconsumed input: {str}"),
             Self::UnknownError           => write!(f, "Unknown error"),
         }
     }

@@ -1,9 +1,9 @@
 use crate::*;
 
 
-pub fn many1<Lx: Lexes>(lexes: Lx) -> Lexer<Many1<Lx>>
+pub fn many1<Lx: Lexes>(lexer: Lexer<Lx>) -> Lexer<Many1<Lx>>
 {
-    Lexer(Many1(lexes))
+    Lexer(Many1(lexer.0))
 }
 
 

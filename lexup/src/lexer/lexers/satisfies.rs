@@ -15,8 +15,16 @@ impl<Pred> Lexes for Satisfies<Pred> where Pred: Fn(&char) -> bool
 
     fn lex<'s>(&self, source: &'s str) -> LexResult<'s, Self::Output>
     {
-        if let Some(c) = source.chars().next() && (self.0)(&c) {
-            Ok((c, &source[1..]))
+        let mut char_indices = source.char_indices();
+
+        if let Some((_, c)) = char_indices.next() && (self.0)(&c) {
+            Ok((c, {
+                if let Some((i, _)) = char_indices.next() {
+                    &source[i..]
+                } else {
+                    ""
+                }
+            }))
         }
         else {
             Err(LexError::NoParse)

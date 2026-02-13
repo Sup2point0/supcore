@@ -1,9 +1,13 @@
-#[derive(Clone, PartialEq)]
+#[derive(Clone, PartialEq, Debug)]
 pub enum SupToken
 {
+    SKIP,
+    UNKNOWN,
+
     L_PAREN,   R_PAREN,
     L_BRACKET, R_BRACKET,
     L_BRACE,   R_BRACE,
+    L_ANGLE,   R_ANGLE,
 
     PIPE, DOT, COMMA,
     PLUS, MINUS, STAR, SLASH,
@@ -27,4 +31,16 @@ pub enum SupToken
     AUTO, WITH,
 
     IS,
+}
+
+impl SupToken
+{
+    pub fn keep(&self) -> bool
+    {
+        match self {
+            Self::UNKNOWN => false,  // TEMP
+            Self::SKIP    => false,
+            _             => true,
+        }
+    }
 }

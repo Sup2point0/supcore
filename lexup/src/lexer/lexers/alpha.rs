@@ -1,7 +1,7 @@
 use crate::*;
 
 
-pub fn any_char() -> Lexer<AnyChar>
+pub fn alpha() -> Lexer<AnyChar>
 {
     Lexer(AnyChar)
 }

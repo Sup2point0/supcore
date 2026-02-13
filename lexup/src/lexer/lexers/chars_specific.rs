@@ -16,13 +16,29 @@ impl Lexes for Chars
 
     fn lex<'s>(&self, source: &'s str) -> LexResult<'s, Self::Output>
     {
-        for (target, received) in self.0.iter().zip(source.chars()) {
-            if *target != received {
-                Err(LexError::NoParse)?
+        let mut char_indices = source.char_indices();
+
+        /* NOTE: Need manual iteration here so we can call `char_indices.next()` once done with iteration */
+        for target in self.0.iter() {
+            match char_indices.next()
+            {
+                None => Err(LexError::NoParse)?,
+                
+                Some((_, received)) => {
+                    if *target != received {
+                        Err(LexError::NoParse)?
+                    }
+                }
             }
         }
 
-        let residue = &source[self.0.len()..];
+        let residue = {
+            if let Some((i, _)) = char_indices.next() {
+                &source[i..]
+            } else {
+                ""
+            }
+        };
 
         Ok((self.0.iter().collect(), residue))
     }

@@ -15,7 +15,7 @@ mod lexers {
     mod many_1; pub use many_1::*;
 
     mod satisfies;      pub use satisfies::*;
-    mod char_any;       pub use char_any::*;
+    mod alpha;       pub use alpha::*;
     mod char_specific;  pub use char_specific::*;
     mod chars_specific; pub use chars_specific::*;
     mod digit;          pub use digit::*;
@@ -28,6 +28,5 @@ pub mod resolvers {
 
 mod macros {
     mod produce; pub use produce::*;
-    mod bitor;   pub use bitor::*;
 }
 pub use macros::*;
