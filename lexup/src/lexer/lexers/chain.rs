@@ -15,7 +15,9 @@ impl<Part> Chain<Part>
             Merger: Fn(Out, Part) -> Out,
             Out: Clone,
     {
-        Lexer(Chained { lexers: self.0, init, reducer })
+        Lexer(
+            Chained { lexers: self.0, init, reducer }
+        )
     }
 }
 
@@ -39,6 +41,7 @@ impl<Rhs, Out> std::ops::BitAnd<Rhs> for Chain<Out>
     fn bitand(mut self, rhs: Rhs) -> Self::Output
     {
         self.0.extend(rhs.extract_lexers());
+        
         Chain(self.0)
     }
 }

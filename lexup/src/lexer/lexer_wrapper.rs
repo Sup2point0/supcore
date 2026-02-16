@@ -35,7 +35,6 @@ impl<Lx: Lexes> Lexer<Lx>
     }
 }
 
-/// Any composite lexer that can return a collection of the lexers it captures.
 impl<Lx> LexerCombinator for Lexer<Lx>
     where Lx: Lexes + 'static
 {
@@ -108,7 +107,7 @@ impl<Lx, Lx1, Lx2, Out> std::ops::BitAnd<And<Lx1, Lx2>> for Lexer<Lx>
 // p & (q & r & s)
 impl<Lx, Out> std::ops::BitAnd<Chain<Out>> for Lexer<Lx>
     where
-        Lx:  Lexes<Output = Out> + 'static,
+        Lx: Lexes<Output = Out> + 'static,
 {
     type Output = Chain<Out>;
 

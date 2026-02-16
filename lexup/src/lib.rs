@@ -1,14 +1,18 @@
+#![allow(dead_code)]
 #![allow(unused_imports)]
 #![allow(non_camel_case_types)]
 
 mod lexup;
-pub use lexup::*;
+pub use lexup::{ Lexup, SupToken };
 
-// pub(crate) mod lexer;
-pub mod lexer;
-pub use lexer::*;
+mod lexer;
+pub(crate) use lexer::*;
+pub use lexer::{ LexError };
 
-#[cfg(test)]
-mod tests {
-    mod test_and;
+
+pub(crate) mod tests
+{
+    pub mod utils;
+
+    #[cfg(test)] mod test_and;
 }

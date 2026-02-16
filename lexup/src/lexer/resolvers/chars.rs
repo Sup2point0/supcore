@@ -10,3 +10,10 @@ pub fn joins(mut acc: String, c: char) -> String
     acc.push(c);
     acc
 }
+
+/// Prepend `c` onto `cs`.
+pub fn cons(c: char, mut str: Vec<char>) -> String
+{
+    str.insert(0, c);
+    str.into_iter().collect()
+}
