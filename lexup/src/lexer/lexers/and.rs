@@ -32,6 +32,12 @@ impl<Lx1, Lx2> And<Lx1, Lx2>
     {
         Lexer(Pair { lexer1: self.0, lexer2: self.1, resolver: |_, r| r })
     }
+
+    pub fn produce<Out>(self, out: Out) -> Lexer<Pair<Lx1, Lx2, impl Fn(Lx1::Output, Lx2::Output) -> Out, Out>>
+        where Out: Clone + 'static
+    {
+        Lexer(Pair { lexer1: self.0, lexer2: self.1, resolver: move |_, _| out.clone()})
+    }
 }
 
 impl<Lx1, Lx2, Out> LexerCombinator for And<Lx1, Lx2>

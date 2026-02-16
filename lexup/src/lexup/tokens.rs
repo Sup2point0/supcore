@@ -15,10 +15,15 @@ pub enum SupToken
     PLUS, MINUS, STAR, SLASH,
     TILDE,
 
+    EQ, EQQ,
+    LTEQ, GTEQ,
+    NEQ,
+
     // Literals
     IDENT(String),
     INT(i32),
     FLOAT(f64),
+    STR(String),
 
     // Keywords
     SET, LET, CONST,
@@ -55,15 +60,33 @@ impl std::fmt::Display for SupToken
     {
         write!(f, "{}", match self
         {
-            Self::L_PAREN      => "(",
-            Self::R_PAREN      => ")",
-            // Self::L_BRACKET    => "",
-            // Self::R_BRACKET    => "",
-            // Self::L_BRACE      => "",
-            // Self::R_BRACE      => "",
-            // Self::L_ANGLE      => "",
-            // Self::R_ANGLE      => "",
-            Self::IDENT(ident) => ident,
+            Self::L_PAREN   => "(",
+            Self::R_PAREN   => ")",
+            Self::L_BRACKET => "Ln[",
+            Self::R_BRACKET => "\n]",
+            Self::L_BRACE   => "\n{",
+            Self::R_BRACE   => "\n}",
+            Self::L_ANGLE   => "<",
+            Self::R_ANGLE   => ">",
+
+            Self::PIPE  => "|",
+            Self::DOT   => ".",
+            Self::COMMA => ",",
+            Self::PLUS  => "+",
+            Self::MINUS => "-",
+            Self::STAR  => "*",
+            Self::SLASH => "/",
+            Self::TILDE => "~",
+
+            Self::EQ   => "=",
+            Self::EQQ  => "==",
+            Self::LTEQ => "=<",
+            Self::GTEQ => ">=",
+            Self::NEQ  => "!=",
+
+            Self::IDENT(ident) => return write!(f, "'{ident}'"),
+            Self::INT(int)     => return write!(f, "{int}"),
+
             _ => return std::fmt::Debug::fmt(self, f),
         })
     }

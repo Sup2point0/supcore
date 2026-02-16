@@ -15,9 +15,13 @@ impl<Part> Chain<Part>
             Merger: Fn(Out, Part) -> Out,
             Out: Clone,
     {
-        Lexer(
-            Chained { lexers: self.0, init, reducer }
-        )
+        Lexer(Chained { lexers: self.0, init, reducer })
+    }
+
+    pub fn produce<Out>(self, out: Out) -> Lexer<Chained<Part, impl Fn(Out, Part) -> Out, Out>>
+        where Out: Clone
+    {
+        Lexer(Chained { lexers: self.0, init: out, reducer: |acc, _| acc })
     }
 }
 

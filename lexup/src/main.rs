@@ -91,5 +91,9 @@ evolve sys.run(ctx) [(par)s]
 
 fn main()
 {
-    println!("{:?}", Lexup::lex_supcode(&PROG));
+    let res = Lexup::lex_supcode(&PROG).unwrap();
+
+    for line in res {
+        print!("{line} ");
+    }
 }

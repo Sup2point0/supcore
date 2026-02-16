@@ -14,6 +14,22 @@ impl Lexes for Token
         (
           produces! { Tk::SKIP => char1(' ') }
 
+        | (
+            (
+                char1('\\')
+                & (
+                    many0(except('\n'))
+                    & char1('\n')
+                ).right()
+            )
+            .produce(Tk::SKIP)
+        )
+
+        | produces! { Tk::NEQ  => chars("!=") }
+        | produces! { Tk::EQQ  => chars("==") }
+        | produces! { Tk::LTEQ => chars("=<") }
+        | produces! { Tk::GTEQ => chars(">=") }
+
         | produces! { Tk::L_PAREN   => char1('(') }
         | produces! { Tk::R_PAREN   => char1(')') }
         | produces! { Tk::L_BRACKET => char1('[') }
@@ -23,6 +39,7 @@ impl Lexes for Token
         | produces! { Tk::L_ANGLE   => char1('<') }
         | produces! { Tk::R_ANGLE   => char1('>') }
 
+        | produces! { Tk::EQ    => char1('=') }
         | produces! { Tk::PIPE  => char1('|') }
         | produces! { Tk::DOT   => char1('.') }
         | produces! { Tk::COMMA => char1(',') }

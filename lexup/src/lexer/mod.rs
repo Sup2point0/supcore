@@ -15,9 +15,10 @@ mod lexers {
     mod many_1; pub use many_1::*;
 
     mod satisfies;      pub use satisfies::*;
-    mod alpha;       pub use alpha::*;
+    mod except;         pub use except::*;
     mod char_specific;  pub use char_specific::*;
     mod chars_specific; pub use chars_specific::*;
+    mod alpha;          pub use alpha::*;
     mod digit;          pub use digit::*;
 }
 pub use lexers::*;
