@@ -28,26 +28,17 @@ impl Lexes for StringLiteral
                     out.push(prod);
                     residue = rest;
                 },
-                Err{..} => match chars("\\\"").lex(residue)
+                Err{..} => match (chars("\\\"") | char1('\\').map(|c| c.to_string())).lex(residue)
                 {
                     Ok((prod, rest)) => {
                         out.push_str(&prod);
                         residue = rest;
                     },
                     Err(LexError::NoParse) => {
-                        match char1('\\').lex(residue) {
-                            Ok((prod, rest)) => {
-                                out.push(prod);
-                                residue = rest;
-                            }
-                            Err(LexError::NoParse) => {
-                                /* NOTE: Guaranteed to be terminating ", so we've finished parsing the string */
-                                let (_, rest) = satisfies(|_| true).lex(residue)?;
-                                residue = rest;
-                                break;
-                            },
-                            Err(e) => return Err(e),
-                        }
+                        /* NOTE: Guaranteed to be terminating ", so we've finished parsing the string */
+                        let (_, rest) = satisfies(|_| true).lex(residue)?;
+                        residue = rest;
+                        break;
                     },
                     Err(e) => return Err(e),
                 }

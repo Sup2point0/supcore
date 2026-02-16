@@ -14,12 +14,14 @@ impl Lexes for Token
         (
           produces! { Tk::SKIP => char1(' ') }
 
+        // Comment (single-line)
         | produces! { Tk::SKIP =>
             (
                 (chars("\\") & (char1(' ') | char1('\n'))).right()
                 & (many0(except('\n')) & char1('\n')).right()
             ).right()
         }
+        // Comment (multi-line)
         | produces! { Tk::SKIP =>
             (
                 (chars("\\\\") & (char1(' ') | char1('\n'))).right()

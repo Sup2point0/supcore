@@ -31,7 +31,7 @@ pub enum SupToken
     OUT,
 
     IF, ELSE,
-    LOOP, WHILE, UNTIL, IN,
+    LOOP, FOR, IN, WHILE, UNTIL,
     TRY, EVADE, ENSURE,
 
     FUNC, STRUCT, ARCHETYPE,
@@ -64,9 +64,10 @@ impl SupToken
             Self::IF        => true,
             Self::ELSE      => true,
             Self::LOOP      => true,
+            Self::FOR       => true,
+            Self::IN        => true,
             Self::WHILE     => true,
             Self::UNTIL     => true,
-            Self::IN        => true,
             Self::TRY       => true,
             Self::EVADE     => true,
             Self::ENSURE    => true,
