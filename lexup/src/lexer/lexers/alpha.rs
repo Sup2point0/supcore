@@ -1,15 +1,15 @@
 use crate::*;
 
 
-pub fn alpha() -> Lexer<AnyChar>
+pub fn alpha() -> Lexer<Alpha>
 {
-    Lexer(AnyChar)
+    Lexer(Alpha)
 }
 
 
-pub struct AnyChar;
+pub struct Alpha;
 
-impl Lexes for AnyChar
+impl Lexes for Alpha
 {
     type Output = char;
 

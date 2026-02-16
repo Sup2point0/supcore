@@ -15,20 +15,64 @@ impl Lexes for StringLiteral
 
     fn lex<'s>(&self, source: &'s str) -> LexResult<'s, Self::Output>
     {
-        // let mut out = String::new();
+        let mut out = String::new();
+        let mut residue = source;
 
-        // let (prod, residue) = char1('"').lex(source)?;
-        // out.push(prod);
+        let (_, rest) = char1('"').lex(residue)?;
+        residue = rest;
 
-        // let (prod, residue) = (
-        //     many0(except('\\')) & char1()
-        // ).lex(residue)?;
-        // out.push(prod);
+        loop {
+            match excepts("\"\\").lex(residue)
+            {
+                Ok((prod, rest)) => {
+                    out.push(prod);
+                    residue = rest;
+                },
+                Err{..} => match chars("\\\"").lex(residue)
+                {
+                    Ok((prod, rest)) => {
+                        out.push_str(&prod);
+                        residue = rest;
+                    },
+                    Err(LexError::NoParse) => {
+                        match char1('\\').lex(residue) {
+                            Ok((prod, rest)) => {
+                                out.push(prod);
+                                residue = rest;
+                            }
+                            Err(LexError::NoParse) => {
+                                /* NOTE: Guaranteed to be terminating ", so we've finished parsing the string */
+                                let (_, rest) = satisfies(|_| true).lex(residue)?;
+                                residue = rest;
+                                break;
+                            },
+                            Err(e) => return Err(e),
+                        }
+                    },
+                    Err(e) => return Err(e),
+                }
+            }
+        }
 
-        // let (prod, residue) = char1('"').lex(residue)?;
-        // out.push(prod);
+        Ok((SupToken::STR(out), residue))
+    }
+}
 
-        // Ok((SupToken::STR(out), residue))
-        unimplemented!()
+
+#[cfg(test)] mod test
+{
+    use crate::*;
+    use super::*;
+
+    #[test] fn test()
+    {
+        assert_lexes!( string().lex("") );
+        assert_lexes!( string().lex("\"sup world\"") => SupToken::STR(str!("sup world")) );
+        assert_lexes!( string().lex("\"\\n\"")       => SupToken::STR(str!("\\n")) );
+
+        assert_lexes!( many0(string()).lex("\"sup\"\"2.0\"") => vec![
+            SupToken::STR(str!("sup")),
+            SupToken::STR(str!("2.0")),
+        ]);
     }
 }

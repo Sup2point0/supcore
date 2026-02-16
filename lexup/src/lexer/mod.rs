@@ -16,6 +16,7 @@ mod lexers {
 
     mod satisfies;      pub use satisfies::*;
     mod except;         pub use except::*;
+    mod excepts;        pub use excepts::*;
     mod char_specific;  pub use char_specific::*;
     mod chars_specific; pub use chars_specific::*;
     mod alpha;          pub use alpha::*;

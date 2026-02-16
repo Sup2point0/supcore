@@ -14,16 +14,18 @@ impl Lexes for Token
         (
           produces! { Tk::SKIP => char1(' ') }
 
-        | (
+        | produces! { Tk::SKIP =>
             (
-                char1('\\')
-                & (
-                    many0(except('\n'))
-                    & char1('\n')
-                ).right()
-            )
-            .produce(Tk::SKIP)
-        )
+                (chars("\\") & (char1(' ') | char1('\n'))).right()
+                & (many0(except('\n')) & char1('\n')).right()
+            ).right()
+        }
+        | produces! { Tk::SKIP =>
+            (
+                (chars("\\\\") & (char1(' ') | char1('\n'))).right()
+                & (many0(except('\\')) & chars("\\\\")).right()
+            ).right()
+        }
 
         | produces! { Tk::NEQ  => chars("!=") }
         | produces! { Tk::EQQ  => chars("==") }
@@ -41,6 +43,7 @@ impl Lexes for Token
 
         | produces! { Tk::EQ    => char1('=') }
         | produces! { Tk::PIPE  => char1('|') }
+        | produces! { Tk::PRIME => char1('\'') }
         | produces! { Tk::DOT   => char1('.') }
         | produces! { Tk::COMMA => char1(',') }
         | produces! { Tk::PLUS  => char1('+') }
@@ -53,6 +56,9 @@ impl Lexes for Token
 
         | keyword_or_identifier()
 
+        | string()
+
+        | produces! { Tk::SKIP     => char1('\n') }
         | produces! { Tk::UNKNOWN  => satisfies(|_| true) }
         
         ).lex(source)

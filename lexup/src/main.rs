@@ -2,6 +2,7 @@ use lexup::*;
 
 
 const PROG: &str = r#"
+\ hello
 <sup ver="6" sty="utinax-vis" ind=3>
 \\
 DISCLAIMER –
@@ -53,7 +54,7 @@ create struct 'profile' {
             alt text + str(var) + ": "
          }
 
-         alt text + { if var is iterable then {
+         alt text + { if var is iterable {
             str.join(
                { for each in var out str(each) }
             ) [sep = ", "]
@@ -92,8 +93,9 @@ evolve sys.run(ctx) [(par)s]
 fn main()
 {
     let res = Lexup::lex_supcode(&PROG).unwrap();
+    println!("{res:?}");
 
     for line in res {
-        print!("{line} ");
+        print!("{line}");
     }
 }
