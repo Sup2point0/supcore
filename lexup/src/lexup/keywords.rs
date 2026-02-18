@@ -27,6 +27,8 @@ lazy_static! {
             "if"     => Tk::IF,
             "else"   => Tk::ELSE,
             "loop"   => Tk::LOOP,
+            "for"    => Tk::FOR,
+            "in"     => Tk::IN,
             "while"  => Tk::WHILE,
             "until"  => Tk::UNTIL,
             "try"    => Tk::TRY,

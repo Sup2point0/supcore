@@ -1,6 +1,7 @@
 pub use crate::*;
 
 
+/// Lexer that matches any character that fulfils `pred`.
 pub fn satisfies<Pred>(pred: Pred) -> Lexer<Satisfies<Pred>> where Pred: Fn(&char) -> bool
 {
     Lexer(Satisfies(pred))

@@ -2,6 +2,7 @@ use crate::*;
 use crate::tests::utils::*;
 
 
+/// Lexer that matches a supcode identifier.
 pub fn ident() -> Lexer<Identifier>
 {
     Lexer(Identifier)

@@ -1,6 +1,7 @@
 use crate::*;
 
 
+/// Lexer that matches a string literal, allowing escaped `"`.
 pub fn string() -> Lexer<StringLiteral>
 {
     Lexer(StringLiteral)

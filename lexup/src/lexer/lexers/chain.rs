@@ -5,11 +5,12 @@ use crate::*;
 
 // == INTERMEDIATE == //
 
-/// Intermediate struct returned by using the `&` combinator on 3+ lexers. Call `.reduce()` on this to produce a full lexer.
+/// Intermediate struct returned by using the `&` combinator on 3+ lexers. Call `.reduce()` on this to build a full lexer.
 pub struct Chain<Part>(pub Vec<Box<dyn Lexes<Output = Part>>>);
 
 impl<Part> Chain<Part>
 {
+    /// Build a lexer that merges the outputs of the chained lexers by applying `reducer` with initial value `init`.
     pub fn reduce<Merger, Out>(self, init: Out, reducer: Merger) -> Lexer<Chained<Part, Merger, Out>>
         where
             Merger: Fn(Out, Part) -> Out,
@@ -18,6 +19,7 @@ impl<Part> Chain<Part>
         Lexer(Chained { lexers: self.0, init, reducer })
     }
 
+    /// Build a lexer that outputs `out` when any successful lex is made.
     pub fn produce<Out>(self, out: Out) -> Lexer<Chained<Part, impl Fn(Out, Part) -> Out, Out>>
         where Out: Clone
     {
@@ -53,7 +55,7 @@ impl<Rhs, Out> std::ops::BitAnd<Rhs> for Chain<Out>
 
 // == LEXER == //
 
-/// A lexer that applies multiple `lexers` in sequence, combining their outputs by applying `reducer` with initial accumulator `init`.
+/// Lexer that applies multiple `lexers` in sequence, combining their outputs by applying `reducer` with initial accumulator `init`.
 pub struct Chained<Part, Merger, Out>
     where
         Merger: Fn(Out, Part) -> Out,

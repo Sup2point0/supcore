@@ -6,13 +6,14 @@ mod lexup;
 pub use lexup::{ Lexup, SupToken };
 
 mod lexer;
-pub(crate) use lexer::*;
 pub use lexer::{ LexError };
+pub(crate) use lexer::*;
 
 
 pub(crate) mod tests
 {
     pub mod utils;
 
+    #[cfg(test)] mod test_lex;
     #[cfg(test)] mod test_and;
 }

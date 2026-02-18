@@ -1,3 +1,4 @@
+/// A token produced during lexing.
 #[derive(Clone, PartialEq, Debug)]
 pub enum SupToken
 {
@@ -44,6 +45,7 @@ pub enum SupToken
 
 impl SupToken
 {
+    /// Should this token be kept for parsing? Returns `false` for tokens that should be ignored.
     pub fn keep(&self) -> bool
     {
         match self {
@@ -53,6 +55,7 @@ impl SupToken
         }
     }
 
+    /// Does this token represent a keyword?
     pub fn is_keyword(&self) -> bool
     {
         match self {

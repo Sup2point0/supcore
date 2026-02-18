@@ -1,6 +1,9 @@
 use crate::*;
 
 
+/// Lexer that matches 0 or more successful lexes of the given lexer.
+/// 
+/// For instance, `many0(digit())` will match on `""`, `"1"`, `"20"`, `"2147483647"`, etc.
 pub fn many0<Lx: Lexes>(lexer: Lexer<Lx>) -> Lexer<Many0<Lx>>
 {
     Lexer(Many0(lexer.0))

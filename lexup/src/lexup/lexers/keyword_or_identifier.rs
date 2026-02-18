@@ -3,7 +3,7 @@ use crate::SupToken as Tk;
 use super::super::*;
 
 
-/// A lexer that will match an identifier, producing either a keyword or identifier token.
+/// Lexer that will match an identifier, producing either a keyword or identifier token.
 pub fn keyword_or_identifier() -> Lexer<KeywordOrIdentifier>
 {
     Lexer(KeywordOrIdentifier)

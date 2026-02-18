@@ -1,6 +1,7 @@
 use crate::*;
 
 
+/// Lexer that tries applying one lexer, and if it fails, tries applying the other.
 pub struct Or<Lx1, Lx2, Out>(pub Lx1, pub Lx2)
     where
         Lx1: Lexes<Output = Out>,

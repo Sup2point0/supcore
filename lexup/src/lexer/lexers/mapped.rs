@@ -1,6 +1,7 @@
 use crate::*;
 
 
+/// Lexer that applies a mapping function to the output of the given lexer. Construct by calling `.map` on any wrapped [`Lexer`].
 pub struct Mapped<Lx, Mapper, Out>(pub Lx, pub Mapper)
     where
         Lx: Lexes,

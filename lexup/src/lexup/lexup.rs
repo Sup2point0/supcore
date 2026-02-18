@@ -2,10 +2,12 @@ use crate::*;
 use super::*;
 
 
+/// The supcode lexer.
 pub struct Lexup;
 
 impl Lexup
 {
+    /// Lex supcode source code into tokens.
     pub fn lex_supcode<'s>(source_code: &'s str) -> Result<Vec<SupToken>, LexError>
     {
         match Many0(Token).lex(source_code)

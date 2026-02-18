@@ -1,6 +1,7 @@
 use crate::*;
 
 
+/// Lexer that matches any character except `c`.
 pub fn except(c: char) -> Lexer<ExceptChar>
 {
     Lexer(ExceptChar(c))

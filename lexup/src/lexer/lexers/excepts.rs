@@ -1,6 +1,7 @@
 use crate::*;
 
 
+/// Lexer that matches any character except those in `str`.
 pub fn excepts(str: &str) -> Lexer<ExceptChars>
 {
     Lexer(ExceptChars(str.chars().collect()))

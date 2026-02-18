@@ -1,6 +1,9 @@
 use crate::*;
 
 
+/// Lexer that matches on 1 or more occurrences of the given lexer.
+/// 
+/// For instance, `many1(digit())` will match on `"2"`, `"69"`, `"4294967296"`, etc. but not on `""`.
 pub fn many1<Lx: Lexes>(lexer: Lexer<Lx>) -> Lexer<Many1<Lx>>
 {
     Lexer(Many1(lexer.0))

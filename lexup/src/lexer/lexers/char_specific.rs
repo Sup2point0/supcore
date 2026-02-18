@@ -2,6 +2,7 @@ use crate::*;
 use crate::lexer as lx;
 
 
+/// Lexer that matches 1 specific character.
 pub fn char1(c: char) -> Lexer<SpecificChar>
 {
     Lexer(SpecificChar(c))

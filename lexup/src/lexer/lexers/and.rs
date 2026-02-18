@@ -5,7 +5,7 @@ use crate::{lexer::lexers, *};
 
 // == INTERMEDIATE == //
 
-/// Intermediate struct returned by using the `&` combinator on 2 lexers. Call `.merge()` or another appropriate resolver on this to produce a full lexer.
+/// Intermediate struct returned by using the `&` combinator on 2 lexers. Call `.merge()` or another appropriate resolver on this to build a full lexer.
 pub struct And<Lx1, Lx2>(pub Lx1, pub Lx2)
     where
         Lx1: Lexes,
@@ -17,22 +17,26 @@ impl<Lx1, Lx2> And<Lx1, Lx2>
         Lx1: Lexes,
         Lx2: Lexes,
 {
+    /// Build a lexer that merges the output of the 2 lexers by applying `merger`.
     pub fn merge<Merger, Out>(self, merger: Merger) -> Lexer<Pair<Lx1, Lx2, Merger, Out>>
         where Merger: Fn(Lx1::Output, Lx2::Output) -> Out
     {
         Lexer(Pair { lexer1: self.0, lexer2: self.1, resolver: merger })
     }
     
+    /// Build a lexer that keeps the output of the former lexer and discards that of the latter.
     pub fn left(self) -> Lexer<Pair<Lx1, Lx2, impl Fn(Lx1::Output, Lx2::Output) -> Lx1::Output, Lx1::Output>>
     {
         Lexer(Pair { lexer1: self.0, lexer2: self.1, resolver: |l, _| l })
     }
     
+    /// Build a lexer that keeps the output of the latter lexer and discards that of the former.
     pub fn right(self) -> Lexer<Pair<Lx1, Lx2, impl Fn(Lx1::Output, Lx2::Output) -> Lx2::Output, Lx2::Output>>
     {
         Lexer(Pair { lexer1: self.0, lexer2: self.1, resolver: |_, r| r })
     }
 
+    /// Build a lexer that outputs `out` when any successful lex is made.
     pub fn produce<Out>(self, out: Out) -> Lexer<Pair<Lx1, Lx2, impl Fn(Lx1::Output, Lx2::Output) -> Out, Out>>
         where Out: Clone + 'static
     {
@@ -79,7 +83,7 @@ impl<Lx1, Lx2, Rhs, Out> std::ops::BitAnd<Rhs> for And<Lx1, Lx2>
 
 // == LEXER == //
 
-/// A lexer that applies 2 lexers `lexer1` and `lexer2` in sequence, and combines their outputs using `resolver`.
+/// Lexer that applies 2 lexers `lexer1` and `lexer2` in sequence, and combines their outputs using `resolver`.
 pub struct Pair<Lx1, Lx2, Resolver, Out>
     where
         Lx1: Lexes,

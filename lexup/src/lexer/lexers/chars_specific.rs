@@ -2,6 +2,7 @@ use crate::*;
 use crate::lexer::*;
 
 
+/// Lexer that matches a specific sequence of characters (provided as a string).
 pub fn chars(str: &str) -> Lexer<Chars>
 {
     Lexer(Chars(str.chars().collect()))

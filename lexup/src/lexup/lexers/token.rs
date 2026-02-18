@@ -3,6 +3,7 @@ use crate::SupToken as Tk;
 use super::*;
 
 
+/// Lexer that combines all other lexers to match any supcode token.
 pub struct Token;
 
 impl Lexes for Token
